@@ -1,0 +1,47 @@
+---
+// Компонент главной страницы портфолио
+// Всё между --- выполняется на сервере при сборке
+const siteTitle = 'Портфолио';
+const siteDescription = 'Developer Relations специалист';
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={siteDescription} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{siteTitle}</title>
+  </head>
+  <body>
+    <main>
+      <h1>Привет! 👋</h1>
+      <p>Добро пожаловать в моё портфолио. Здесь будет контент о моих проектах и опыте.</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #666;
+  }
+</style>
