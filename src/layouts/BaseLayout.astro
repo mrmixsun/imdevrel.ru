@@ -1,0 +1,200 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  singlePage?: boolean;
+}
+
+const { title, description = 'Михаил Сторожилов — Devrel lead, ecom.tech', singlePage = false } = Astro.props;
+
+const navItems = singlePage
+  ? [
+      { href: '#hero', label: 'Главная' },
+      { href: '#about', label: 'Обо мне' },
+      { href: '#experience', label: 'Опыт' },
+      { href: '#contacts', label: 'Контакты' },
+    ]
+  : [
+      { href: '/', label: 'Главная' },
+      { href: '/about', label: 'Обо мне' },
+      { href: '/experience', label: 'Опыт' },
+      { href: '/contacts', label: 'Контакты' },
+    ];
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title === 'Михаил Сторожилов' ? 'Михаил Сторожилов — Devrel lead' : `${title} — Михаил Сторожилов`}</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href={singlePage ? '#hero' : '/'} class="logo">МС</a>
+        <ul>
+          {navItems.map((item) => (
+            <li>
+              <a href={item.href} class="nav-link" data-section={item.href.replace('#', '')}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>Михаил Сторожилов · Devrel lead · ecom.tech</p>
+      <p class="footer-links">
+        <a href="https://t.me/mrmixsun" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a href="https://t.me/iamdevrel" target="_blank" rel="noopener noreferrer">@iamdevrel</a>
+        <a href="https://iamdevrel.ru" target="_blank" rel="noopener noreferrer">iamdevrel.ru</a>
+        <a href="https://github.com/mrmixsun" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="tel:+79133919537">+7 913 391-95-37</a>
+      </p>
+    </footer>
+
+    {singlePage && (
+      <script is:inline>
+        document.querySelectorAll('.nav-link').forEach((link) => {
+          link.addEventListener('click', (e) => {
+            const hash = link.getAttribute('href');
+            if (hash?.startsWith('#')) {
+              document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        });
+
+        function updateActiveNav() {
+          const sections = ['hero', 'about', 'experience', 'contacts'];
+          const scrollY = window.scrollY;
+          let current = 'hero';
+          sections.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el && el.offsetTop <= scrollY + 100) current = id;
+          });
+          document.querySelectorAll('.nav-link').forEach((link) => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+          });
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        window.addEventListener('hashchange', updateActiveNav);
+        updateActiveNav();
+      </script>
+    )}
+  </body>
+</html>
+
+<style>
+  :root {
+    --color-text: #1a1a1a;
+    --color-text-muted: #666;
+    --color-bg: #fafafa;
+    --color-accent: #0f766e;
+    --color-border: #e5e5e5;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: var(--color-text);
+    background: var(--color-bg);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-border);
+    background: white;
+  }
+
+  nav {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .logo:hover {
+    color: var(--color-accent);
+  }
+
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a.active {
+    color: var(--color-accent);
+  }
+
+  main {
+    flex: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    width: 100%;
+  }
+
+  footer {
+    border-top: 1px solid var(--color-border);
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-links {
+    margin: 0.5rem 0 0;
+  }
+
+  .footer-links a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-links a:not(:last-child)::after {
+    content: ' · ';
+    color: var(--color-text-muted);
+  }
+</style>
