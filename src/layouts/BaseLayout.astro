@@ -3,23 +3,43 @@ interface Props {
   title: string;
   description?: string;
   singlePage?: boolean;
+  /** Отдельная страница (например /cv): только ссылка на главную */
+  minimalNav?: boolean;
+  /** Широкий main (макет A4 для /cv) */
+  wideMain?: boolean;
 }
 
-const { title, description = 'Михаил Сторожилов — Devrel lead, ecom.tech', singlePage = false } = Astro.props;
+const {
+  title,
+  description = 'Михаил Сторожилов — Devrel lead, ecom.tech',
+  singlePage = false,
+  minimalNav = false,
+  wideMain = false,
+} = Astro.props;
 
-const navItems = singlePage
-  ? [
-      { href: '#hero', label: 'Главная' },
-      { href: '#about', label: 'Обо мне' },
-      { href: '#experience', label: 'Опыт' },
-      { href: '#contacts', label: 'Контакты' },
-    ]
-  : [
-      { href: '/', label: 'Главная' },
-      { href: '/about', label: 'Обо мне' },
-      { href: '/experience', label: 'Опыт' },
-      { href: '/contacts', label: 'Контакты' },
-    ];
+const navItems = minimalNav
+  ? [{ href: '/', label: 'На главную' }]
+  : singlePage
+    ? [
+        { href: '#hero', label: 'Главная' },
+        { href: '#about', label: 'Обо мне' },
+        { href: '#highlights', label: 'Достижения' },
+        { href: '#experience', label: 'Опыт' },
+        { href: '#skills', label: 'Навыки' },
+        { href: '#contacts', label: 'Контакты' },
+        { href: '/cv', label: 'CV' },
+      ]
+    : [
+        { href: '/', label: 'Главная' },
+        { href: '/#about', label: 'Обо мне' },
+        { href: '/#highlights', label: 'Достижения' },
+        { href: '/#experience', label: 'Опыт' },
+        { href: '/#skills', label: 'Навыки' },
+        { href: '/#contacts', label: 'Контакты' },
+        { href: '/cv', label: 'CV' },
+      ];
+
+const logoHref = minimalNav ? '/' : singlePage ? '#hero' : '/';
 ---
 
 <!doctype html>
@@ -30,16 +50,26 @@ const navItems = singlePage
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title === 'Михаил Сторожилов' ? 'Михаил Сторожилов — Devrel lead' : `${title} — Михаил Сторожилов`}</title>
+    <title>
+      {title === 'Михаил Сторожилов'
+        ? 'Михаил Сторожилов — Devrel lead'
+        : title === 'Резюме'
+          ? 'Резюме — Михаил Сторожилов'
+          : `${title} — Михаил Сторожилов`}
+    </title>
   </head>
   <body>
     <header>
       <nav>
-        <a href={singlePage ? '#hero' : '/'} class="logo">МС</a>
+        <a href={logoHref} class="logo">МС</a>
         <ul>
           {navItems.map((item) => (
             <li>
-              <a href={item.href} class="nav-link" data-section={item.href.replace('#', '')}>
+              <a
+                href={item.href}
+                class="nav-link"
+                data-section={item.href.startsWith('#') ? item.href.slice(1) : ''}
+              >
                 {item.label}
               </a>
             </li>
@@ -48,7 +78,7 @@ const navItems = singlePage
       </nav>
     </header>
 
-    <main>
+    <main class:list={[{ 'main--wide': wideMain }]}>
       <slot />
     </main>
 
@@ -63,7 +93,7 @@ const navItems = singlePage
       </p>
     </footer>
 
-    {singlePage && (
+    {singlePage && !minimalNav && (
       <script is:inline>
         document.querySelectorAll('.nav-link').forEach((link) => {
           link.addEventListener('click', (e) => {
@@ -75,7 +105,7 @@ const navItems = singlePage
         });
 
         function updateActiveNav() {
-          const sections = ['hero', 'about', 'experience', 'contacts'];
+          const sections = ['hero', 'about', 'highlights', 'experience', 'skills', 'languages', 'contacts'];
           const scrollY = window.scrollY;
           let current = 'hero';
           sections.forEach((id) => {
@@ -170,6 +200,11 @@ const navItems = singlePage
     margin: 0 auto;
     padding: 3rem 1.5rem;
     width: 100%;
+  }
+
+  main.main--wide {
+    max-width: min(100%, 220mm);
+    padding: 1.5rem 1rem 2.5rem;
   }
 
   footer {

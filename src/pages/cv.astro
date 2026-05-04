@@ -1,0 +1,375 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Резюме"
+  description="Резюме: Михаил Сторожилов — DevRel, Employer Brand, Communications & Engineering Culture Lead."
+  minimalNav={true}
+  wideMain={true}
+>
+  <article class="cv-premium">
+    <div class="cv-sheet">
+      <header class="cv-top">
+        <div class="cv-top-main">
+          <h1>Михаил Сторожилов</h1>
+          <div class="cv-role-line">
+            DevRel, Employer Brand, Communications & Engineering Culture Lead
+          </div>
+          <div class="cv-top-contacts">
+            <a href="mailto:i@mstorozhilov.ru">i@mstorozhilov.ru</a>
+            <span class="cv-sep">|</span>
+            <a href="https://imdevrel.ru">imdevrel.ru</a>
+          </div>
+        </div>
+        <img
+          class="cv-avatar"
+          src="/photo.jpg"
+          alt="Фото Михаила Сторожилова"
+          width="106"
+          height="106"
+          onerror="this.src='/photo-placeholder.svg'"
+        />
+      </header>
+
+      <div class="cv-grid">
+        <section class="cv-col-main">
+          <div class="cv-block">
+            <h2>Профиль</h2>
+            <p>
+              DevRel-лид с 10+ годами опыта в IT. Специализируюсь на коммуникациях, развитии инженерной культуры и
+              управлении изменениями в технологических командах.
+            </p>
+            <p>
+              Работал в стартапах, бигтехах и консалтинге: строю бренд работодателя, системы коммуникаций, запускаю
+              конвейер инженерного контента, развиваю профессиональные сообщества и амбассадорские программы.
+            </p>
+          </div>
+
+          <div class="cv-impact">
+            <h2>Ключевые достижения</h2>
+            <ul>
+              <li>
+                Масштабировал спикерскую программу в ecom.tech: ~10 участников (2022) → 136 участников (2025).
+              </li>
+              <li>
+                Построил систему внутренних инженерных коммуникаций: еженедельные митапы, прозрачный pipeline
+                подготовки, progression-модель развития спикеров.
+              </li>
+              <li>В кризисной фазе 2025 сохранил выпуск ключевых коммуникационных артефактов при сокращении бюджета и команды.</li>
+              <li>
+                Выстроил кросс-функциональную коммуникацию между HRD, CTO, Head of AI, engineering leadership, рекрутингом
+                и внутрикомом.
+              </li>
+              <li>В клиентском кейсе внедрил event-driven воронку: 350 регистраций → 180 участников → 18 интервью → 8 офферов.</li>
+            </ul>
+          </div>
+
+          <div class="cv-block">
+            <h2>Опыт</h2>
+
+            <article class="cv-job">
+              <div class="cv-job-head">
+                <div class="cv-job-title">ecom.tech (ex-Samokat.tech) — DevRel → Head of Developer Relations</div>
+                <div class="cv-job-meta">2022–2026</div>
+              </div>
+              <ul>
+                <li>Развитие внутренних инженерных коммуникаций и культуры обмена знаниями.</li>
+                <li>Масштабирование контент-фабрики и амбассадорской/спикерской программы.</li>
+                <li>Поддержка change-коммуникаций и alignment между HR и leadership.</li>
+              </ul>
+            </article>
+
+            <article class="cv-job">
+              <div class="cv-job-head">
+                <div class="cv-job-title">DevRel Bureau — Cofounder & Lead DevRel / HR Marketing Consultant</div>
+                <div class="cv-job-meta">2017–2025</div>
+              </div>
+              <ul>
+                <li>Руководство коммуникационными и комьюнити-проектами для продуктовых IT-компаний.</li>
+                <li>Проектирование форматов контента, мероприятий и внутренних сообществ.</li>
+                <li>Внедрение метрик и аналитики эффективности коммуникационных активностей.</li>
+              </ul>
+            </article>
+
+            <article class="cv-job">
+              <div class="cv-job-head">
+                <div class="cv-job-title">2ГИС — Developer Relations Specialist</div>
+                <div class="cv-job-meta">2013–2017</div>
+              </div>
+              <ul>
+                <li>Запуск внутренних инженерных форматов: DevDay, 2Фест, внутренние хакатоны.</li>
+                <li>Развитие горизонтальных связей между командами через регулярные практики обмена опытом.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <aside class="cv-aside">
+          <div class="cv-block">
+            <h2>Ключевые компетенции</h2>
+            <div class="cv-chip-list">
+              <span class="cv-chip">DevRel-стратегия</span>
+              <span class="cv-chip">Внутренние коммуникации</span>
+              <span class="cv-chip">Инженерная культура</span>
+              <span class="cv-chip">Управление изменениями</span>
+              <span class="cv-chip">Контент-фабрика</span>
+              <span class="cv-chip">Спикерские программы</span>
+              <span class="cv-chip">Кросс-функциональное лидерство</span>
+              <span class="cv-chip">Аналитика</span>
+              <span class="cv-chip">Маркетинг и PR</span>
+              <span class="cv-chip">Мероприятия</span>
+            </div>
+          </div>
+
+          <div class="cv-block">
+            <h2>Языки</h2>
+            <div class="cv-lang-line">Русский — родной</div>
+            <div class="cv-lang-line">English — B1 (Intermediate)</div>
+          </div>
+
+          <div class="cv-block">
+            <h2>Фокус роли</h2>
+            <p class="cv-small">
+              DevRel leadership: системные программы, развитие экспертов, масштабирование контента и синхронизация со
+              стейкхолдерами.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .cv-premium {
+    --cv-text: #0f172a;
+    --cv-muted: #475569;
+    --cv-accent: #1d4ed8;
+    --cv-line: #e2e8f0;
+    --cv-bg-soft: #f8fafc;
+    --cv-gold: #d4af37;
+    --cv-header: #111827;
+    color: var(--cv-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.4;
+  }
+
+  .cv-sheet {
+    width: 210mm;
+    max-width: 100%;
+    min-height: auto;
+    margin: 0 auto;
+    padding: 14mm 14mm 12mm;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .cv-top {
+    background: var(--cv-header);
+    color: #fff;
+    border-bottom: 2px solid var(--cv-gold);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .cv-top-main h1 {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+  }
+
+  .cv-role-line {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #f5e6c8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .cv-top-contacts {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #d7deea;
+  }
+
+  .cv-top-contacts a {
+    color: #d7deea;
+    text-decoration: none;
+  }
+
+  .cv-top-contacts a:hover {
+    text-decoration: underline;
+  }
+
+  .cv-sep {
+    margin: 0 0.35em;
+    opacity: 0.7;
+  }
+
+  .cv-avatar {
+    width: 28mm;
+    height: 28mm;
+    max-width: 106px;
+    max-height: 106px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    display: block;
+  }
+
+  .cv-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 640px) {
+    .cv-grid {
+      grid-template-columns: 2.1fr 1fr;
+    }
+  }
+
+  .cv-premium h2 {
+    margin: 0 0 8px;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #0b3ea8;
+  }
+
+  .cv-block {
+    margin-bottom: 12px;
+  }
+
+  .cv-premium p {
+    margin: 0 0 8px;
+    font-size: 12.2px;
+  }
+
+  .cv-impact {
+    background: var(--cv-bg-soft);
+    border: 1px solid var(--cv-line);
+    border-left: 3px solid var(--cv-gold);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .cv-impact ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .cv-premium ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .cv-premium li {
+    margin: 0 0 4px;
+    font-size: 12px;
+  }
+
+  .cv-job {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cv-line);
+  }
+
+  .cv-job:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .cv-job-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .cv-job-title {
+    font-size: 12.8px;
+    font-weight: 700;
+  }
+
+  .cv-job-meta {
+    font-size: 11.3px;
+    color: var(--cv-muted);
+    white-space: nowrap;
+  }
+
+  .cv-aside {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  @media (min-width: 640px) {
+    .cv-aside {
+      border-left: 1px solid var(--cv-line);
+      padding-left: 14px;
+    }
+  }
+
+  .cv-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .cv-chip {
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 10.8px;
+    color: #334155;
+    background: #fff;
+  }
+
+  .cv-lang-line {
+    font-size: 12px;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  .cv-small {
+    font-size: 12px;
+    color: var(--cv-muted);
+    margin: 0;
+  }
+</style>
+
+<style is:global>
+  @media print {
+    body > header,
+    body > footer {
+      display: none !important;
+    }
+
+    body > main.main--wide {
+      max-width: none;
+      padding: 0;
+    }
+
+    .cv-premium .cv-sheet {
+      width: auto;
+      min-height: auto;
+      margin: 0;
+      padding: 10mm 10mm 8mm;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+</style>
