@@ -74,6 +74,7 @@ const logoHref = minimalNav ? '/' : singlePage ? '#hero' : '/';
               </a>
             </li>
           ))}
+          <slot name="nav-extra" />
         </ul>
       </nav>
     </header>
@@ -181,7 +182,9 @@ const logoHref = minimalNav ? '/' : singlePage ? '#hero' : '/';
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
   }
 
   nav a {
@@ -192,6 +195,27 @@ const logoHref = minimalNav ? '/' : singlePage ? '#hero' : '/';
   nav a:hover,
   nav a.active {
     color: var(--color-accent);
+  }
+
+  .nav-pdf-btn {
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: #fff;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  .nav-pdf-btn:hover {
+    opacity: 0.92;
+  }
+
+  .nav-pdf-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
   }
 
   main {

@@ -8,6 +8,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   minimalNav={true}
   wideMain={true}
 >
+  <li slot="nav-extra">
+    <button type="button" id="cv-pdf-download" class="nav-pdf-btn">Скачать PDF-версию</button>
+  </li>
+
   <article class="cv-premium">
     <div class="cv-sheet">
       <header class="cv-top">
@@ -373,3 +377,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 </style>
+
+<script>
+  async function setupCvPdfDownload() {
+    const btn = document.getElementById('cv-pdf-download');
+    const sheet = document.querySelector('.cv-sheet');
+    if (!btn || !sheet) return;
+
+    btn.addEventListener('click', async () => {
+      try {
+        btn.disabled = true;
+        const html2pdf = (await import('html2pdf.js')).default;
+        await html2pdf()
+          .set({
+            margin: [8, 8, 8, 8],
+            filename: 'storozhilov-cv.pdf',
+            image: { type: 'jpeg', quality: 0.93 },
+            html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['css', 'legacy'] },
+          })
+          .from(sheet)
+          .save();
+      } catch (e) {
+        console.error(e);
+        window.alert('Не удалось сформировать PDF. Попробуйте ещё раз или сохраните страницу через Печать → PDF.');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+
+  setupCvPdfDownload();
+</script>
