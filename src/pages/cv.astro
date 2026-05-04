@@ -160,6 +160,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .cv-sheet {
+    box-sizing: border-box;
     width: 210mm;
     max-width: 100%;
     min-height: auto;
@@ -168,6 +169,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    overflow: visible;
+  }
+
+  /* Иначе grid-колонки могут расширять лист и обрезаться в html2canvas */
+  .cv-col-main,
+  .cv-aside {
+    min-width: 0;
   }
 
   .cv-top {
@@ -307,6 +315,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .cv-job-title {
     font-size: 12.8px;
     font-weight: 700;
+    overflow-wrap: anywhere;
   }
 
   .cv-job-meta {
@@ -388,12 +397,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       try {
         btn.disabled = true;
         const html2pdf = (await import('html2pdf.js')).default;
+
+        const rect = sheet.getBoundingClientRect();
+        const captureW = Math.max(Math.ceil(sheet.scrollWidth), Math.ceil(rect.width));
+        const captureH = Math.max(Math.ceil(sheet.scrollHeight), Math.ceil(rect.height));
+
         await html2pdf()
           .set({
-            margin: [8, 8, 8, 8],
+            margin: [0, 0, 0, 0],
             filename: 'storozhilov-cv.pdf',
-            image: { type: 'jpeg', quality: 0.93 },
-            html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true },
+            image: { type: 'jpeg', quality: 0.95 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              logging: false,
+              letterRendering: true,
+              scrollX: 0,
+              scrollY: -window.scrollY,
+              width: captureW,
+              height: captureH,
+              windowWidth: captureW,
+              windowHeight: captureH,
+              onclone(clonedDoc) {
+                const clone = clonedDoc.querySelector('.cv-sheet');
+                if (!clone) return;
+                clone.style.width = `${captureW}px`;
+                clone.style.maxWidth = 'none';
+                clone.style.margin = '0';
+                clone.style.boxSizing = 'border-box';
+                clonedDoc.documentElement.style.overflow = 'visible';
+                clonedDoc.body.style.overflow = 'visible';
+                clonedDoc.body.style.width = `${captureW}px`;
+              },
+            },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: { mode: ['css', 'legacy'] },
           })
