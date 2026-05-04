@@ -365,6 +365,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <style is:global>
+  /*
+    На время экспорта PDF (Safari + html2canvas): фиксированная ширина A4 в px и две колонки,
+    иначе при узком окне лист сужается, canvas режется справа.
+  */
+  body.cv-pdf-capture main.main--wide {
+    max-width: none !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  body.cv-pdf-capture .cv-premium {
+    overflow: visible !important;
+  }
+
+  body.cv-pdf-capture .cv-premium .cv-sheet {
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body.cv-pdf-capture .cv-premium .cv-grid {
+    grid-template-columns: 2.1fr 1fr !important;
+  }
+
   @media print {
     body > header,
     body > footer {
@@ -388,19 +414,53 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </style>
 
 <script>
+  function isSafariBrowser() {
+    const ua = navigator.userAgent.toLowerCase();
+    return ua.includes('safari') && !ua.includes('chrome') && !ua.includes('chromium');
+  }
+
+  /** Ширина A4 в CSS-пикселях при 96dpi (стабильнее mm для html2canvas в Safari). */
+  function a4WidthPx() {
+    return Math.round((210 / 25.4) * 96);
+  }
+
+  async function flushLayout() {
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => requestAnimationFrame(r));
+    await new Promise((r) => setTimeout(r, isSafariBrowser() ? 80 : 0));
+  }
+
   async function setupCvPdfDownload() {
     const btn = document.getElementById('cv-pdf-download');
     const sheet = document.querySelector('.cv-sheet');
     if (!btn || !sheet) return;
 
     btn.addEventListener('click', async () => {
+      let cleaned = false;
+      const cleanup = () => {
+        if (cleaned) return;
+        cleaned = true;
+        document.body.classList.remove('cv-pdf-capture');
+        sheet.style.width = '';
+        sheet.style.maxWidth = '';
+      };
+
       try {
         btn.disabled = true;
-        const html2pdf = (await import('html2pdf.js')).default;
+        sheet.scrollIntoView({ block: 'start', behavior: 'instant' });
 
-        const rect = sheet.getBoundingClientRect();
-        const captureW = Math.max(Math.ceil(sheet.scrollWidth), Math.ceil(rect.width));
-        const captureH = Math.max(Math.ceil(sheet.scrollHeight), Math.ceil(rect.height));
+        document.body.classList.add('cv-pdf-capture');
+        const targetW = a4WidthPx();
+        sheet.style.width = `${targetW}px`;
+        sheet.style.maxWidth = 'none';
+
+        await flushLayout();
+
+        const captureW = Math.max(sheet.scrollWidth, sheet.offsetWidth, targetW);
+        const captureH = sheet.scrollHeight;
+
+        const html2pdf = (await import('html2pdf.js')).default;
+        const safari = isSafariBrowser();
 
         await html2pdf()
           .set({
@@ -412,22 +472,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               useCORS: true,
               logging: false,
               letterRendering: true,
+              backgroundColor: '#ffffff',
               scrollX: 0,
               scrollY: -window.scrollY,
-              width: captureW,
-              height: captureH,
-              windowWidth: captureW,
-              windowHeight: captureH,
+              /*
+               В Safari явные width/height часто дают обрезку справа; задаём окно и клон.
+               В Chromium обычно достаточно тех же window* + явных размеров.
+               */
+              ...(safari
+                ? {}
+                : {
+                    width: captureW,
+                    height: captureH,
+                  }),
+              windowWidth: captureW + 4,
+              windowHeight: Math.min(captureH + 4, 32767),
               onclone(clonedDoc) {
                 const clone = clonedDoc.querySelector('.cv-sheet');
                 if (!clone) return;
                 clone.style.width = `${captureW}px`;
                 clone.style.maxWidth = 'none';
-                clone.style.margin = '0';
+                clone.style.margin = '0 auto';
                 clone.style.boxSizing = 'border-box';
                 clonedDoc.documentElement.style.overflow = 'visible';
                 clonedDoc.body.style.overflow = 'visible';
+                clonedDoc.body.style.margin = '0';
+                clonedDoc.body.style.padding = '0';
                 clonedDoc.body.style.width = `${captureW}px`;
+                clonedDoc.body.style.backgroundColor = '#ffffff';
               },
             },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -439,6 +511,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         console.error(e);
         window.alert('Не удалось сформировать PDF. Попробуйте ещё раз или сохраните страницу через Печать → PDF.');
       } finally {
+        cleanup();
         btn.disabled = false;
       }
     });
